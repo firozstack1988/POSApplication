@@ -1,16 +1,23 @@
 package com.JavaTech.Controller;
 
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.JavaTech.Dto.CustomerWrapper;
 import com.JavaTech.Dto.UserRequest;
+import com.JavaTech.Entity.CustomerInfo;
 import com.JavaTech.Entity.UserDetail;
 import com.JavaTech.Service.UserDetailServiceImpl;
 
@@ -21,6 +28,8 @@ import jakarta.validation.Valid;
 public class UserDetailController {
 	 @Autowired
 	 private UserDetailServiceImpl userDetailService;
+	 @Autowired
+	 private ModelMapper modelMapper;
 	
 	@PostMapping("/add")
 	public ResponseEntity<String> add(@RequestBody @Valid UserRequest userRequest) {
@@ -31,5 +40,18 @@ public class UserDetailController {
 	@GetMapping("/findUser/{id}")
 	public ResponseEntity<UserDetail> findUser(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(userDetailService.findById(id),HttpStatus.FOUND) ;	
+	}
+	
+	@PatchMapping("modify/{id}")
+	public ResponseEntity<String> partialUpdateUser(@PathVariable("id") Long id,@RequestBody UserRequest userRequest) {
+		UserDetail userDetail=modelMapper.map(userRequest, UserDetail.class);
+		return new ResponseEntity<>(userDetailService.partialUpdateUser(id,userDetail),HttpStatus.CREATED);
+		
+	}
+	
+	@PutMapping("/modify/{id}")
+	public ResponseEntity<String> fullUpdate(@PathVariable("id") Long id,@RequestBody UserRequest userRequest) {
+		UserDetail userDetail=modelMapper.map(userRequest, UserDetail.class);
+		return new ResponseEntity<>(userDetailService.fullUpdate(id,userDetail),HttpStatus.CREATED); 			
 	}
 }
