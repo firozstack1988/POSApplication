@@ -7,4 +7,6 @@ public interface UserDetailService {
   
 	public String add(UserDetail userDetail);
 	public UserDetail findById(Long id);
+	public String partialUpdateUser(Long id,UserDetail userDetail);
+	public String fullUpdate(Long id,UserDetail userDetail);
 }

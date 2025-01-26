@@ -37,4 +37,27 @@ public class UserDetailServiceImpl implements UserDetailService{
 			throw new NoSuchElementFoundException("User not found");		
 	}
 
+	@Override
+	public String partialUpdateUser(Long id,UserDetail userDetail) {
+		Optional<UserDetail> existUser=userDetailRepo.findById(id);
+		if(existUser.isPresent()) {
+			existUser.get().setMobile(userDetail.getMobile());
+			userDetailRepo.save(existUser.get());
+			return ExceptionMessage.MSG_UPDATE;
+		}		 
+		else
+			throw new NoSuchElementFoundException("User not found");	
+	}
+
+	@Override
+	public String fullUpdate(Long id, UserDetail userDetail) {
+		Optional<UserDetail> existUser=userDetailRepo.findById(id);
+		if(existUser.isPresent()) {
+			userDetailRepo.save(existUser.get());
+			return ExceptionMessage.MSG_UPDATE;
+		}		 
+		else
+			throw new NoSuchElementFoundException("User not found");	
+	}
+
 }
