@@ -37,16 +37,15 @@ public class UserDetailController {
 		}
 	
 	@PostMapping("/add")
-	//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<String> add(@RequestBody @Valid UserRequest userRequest) {
 		UserDetail userDetail= UserDetail.build(null, userRequest.getUserName(),passwordEncoder.encode(userRequest.getPassword()), 
-				 userRequest.getEmail(), userRequest.getMobile(), userRequest.getNationality(),userRequest.getUserRole());
+		userRequest.getEmail(), userRequest.getMobile(), userRequest.getNationality(),userRequest.getUserRole());
 		return new ResponseEntity<>(userDetailService.add(userDetail),HttpStatus.CREATED) ;	
 	}
 	
 	@GetMapping("/findUser/{id}")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
 	public ResponseEntity<UserDetail> findUser(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(userDetailService.findById(id),HttpStatus.FOUND) ;	
 	}
