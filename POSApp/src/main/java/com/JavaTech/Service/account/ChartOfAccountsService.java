@@ -1,0 +1,8 @@
+package com.JavaTech.Service.account;
+
+import com.JavaTech.Entity.accounts.ChartOfAccounts;
+
+public interface ChartOfAccountsService {
+
+	public String add(ChartOfAccounts chartOfAccounts);
+}
