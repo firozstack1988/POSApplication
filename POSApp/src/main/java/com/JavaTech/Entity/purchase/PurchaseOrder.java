@@ -1,6 +1,9 @@
 package com.JavaTech.Entity.purchase;
 
+import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,8 +28,10 @@ public class PurchaseOrder {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	private String orderNo;
-	private String orderDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "DD-MM-YYYY")
+	private Date orderDate;
 	private String supplier;
+	private Double totalAmount;
 	@OneToMany(targetEntity=OrderItem.class, fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name="purchaseOrder_id",referencedColumnName="id")
 	private List<OrderItem> orderItems;
