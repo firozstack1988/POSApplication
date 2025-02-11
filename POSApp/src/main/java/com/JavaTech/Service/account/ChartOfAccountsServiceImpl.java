@@ -1,5 +1,7 @@
 package com.JavaTech.Service.account;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,11 @@ public class ChartOfAccountsServiceImpl implements ChartOfAccountsService{
 			}
 			else
 		      throw new ElementAlreadyExistsException("ChartOfAccounts already exist");	
+	}
+
+	@Override
+	public List<ChartOfAccounts> findAllChartOfAccount() {		
+		return chartOfAccountsRepo.findAll();
 	}
 
 }
