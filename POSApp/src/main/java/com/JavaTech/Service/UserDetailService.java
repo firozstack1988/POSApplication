@@ -1,6 +1,7 @@
 package com.JavaTech.Service;
 
-import com.JavaTech.Dto.UserRequest;
+import java.util.List;
+
 import com.JavaTech.Entity.UserDetail;
 
 public interface UserDetailService {
@@ -9,4 +10,5 @@ public interface UserDetailService {
 	public UserDetail findById(Long id);
 	public String partialUpdateUser(Long id,UserDetail userDetail);
 	public String fullUpdate(Long id,UserDetail userDetail);
+	public List<UserDetail> findUserList();
 }

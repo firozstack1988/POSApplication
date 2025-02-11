@@ -1,5 +1,6 @@
 package com.JavaTech.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,11 @@ public class UserDetailServiceImpl implements UserDetailService{
 		}		 
 		else
 			throw new NoSuchElementFoundException("User not found");	
+	}
+
+	@Override
+	public List<UserDetail> findUserList() {		 
+		return userDetailRepo.findAll();
 	}
 
 }
