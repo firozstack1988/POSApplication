@@ -1,5 +1,7 @@
 package com.JavaTech.Controller;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +55,6 @@ public class UserDetailController {
 		final UserDetails loadedUser=userDetailsService.loadUserByUsername(userAuthenticate.getUserName());
 		Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthenticate.getUserName(),userAuthenticate.getPassword()));
 		if(authentication.isAuthenticated()) {	
-			System.out.print("token="+jwtUtils.generateToken(loadedUser));
 			return new ResponseEntity<>(new JwtResponse(jwtUtils.generateToken(loadedUser),"") ,HttpStatus.ACCEPTED);
 		}
 		else
@@ -67,7 +68,7 @@ public class UserDetailController {
 		}
 	
 	@PostMapping("/add")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<String> add(@RequestBody @Valid UserRequest userRequest) {
 		UserDetail userDetail= UserDetail.build(null, userRequest.getUserName(),passwordEncoder.encode(userRequest.getPassword()), 
 		userRequest.getEmail(), userRequest.getMobile(), userRequest.getNationality(),userRequest.getUserRole());
@@ -78,6 +79,12 @@ public class UserDetailController {
 	@PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
 	public ResponseEntity<UserDetail> findUser(@PathVariable("id") Long id) {
 		return new ResponseEntity<>(userDetailService.findById(id),HttpStatus.FOUND) ;	
+	}
+	
+	@GetMapping("/userList")
+	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+	public ResponseEntity<List<UserDetail>> findUserList() {
+		return new ResponseEntity<>(userDetailService.findUserList(),HttpStatus.FOUND) ;	
 	}
 	
 	@PatchMapping("modify/{id}")
